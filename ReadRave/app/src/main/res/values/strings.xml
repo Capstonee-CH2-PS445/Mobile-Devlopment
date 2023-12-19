@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">Read Rave</string>
+    <string name="signup">Daftar</string>
+    <string name="login">Masuk</string>
+    <string name="message_welcome_page">Temukan buku favoritmu dan nikmati momen membaca yang menyenangkan </string>
+    <string name="title_welcome_page">Read Rave</string>
+    <string name="title_signup_page">Lengkapi data dirimu di bawah ini ya</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="message_login_page">Masukkan dulu datamu ya</string>
+    <string name="title_login_page">Sudah siap berbagi cerita?</string>
+    <string name="name">Nama</string>
+    <string name="logout">Logout</string>
+    <string name="title_login">Hallo</string>
+    <string name="storyUsername">Username</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="profile">Profile</string>
+    <string name="sedang_dibaca">Sedang Dibaca</string>
+    <string name="for_your_book">Pilihan Buat Kamu</string>
+    <string name="top_book">Teratas</string>
+    <string name="searchbar_hint">Cari buku kesukaan kamu</string>
+    <string name="seacrh_title">Telusuri</string>
+    <string name="explore_title">Jelajahi</string>
+    <string name="genre_name">Genre</string>
+    <string name="books_title">Judul Buku</string>
+    <string name="book_description">Deskripsi buku</string>
+    <string name="back">Kembali</string>
 </resources>
