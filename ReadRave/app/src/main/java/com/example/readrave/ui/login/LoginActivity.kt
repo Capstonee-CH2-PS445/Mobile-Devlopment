@@ -5,17 +5,25 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.lifecycleScope
 import com.example.readrave.R
+import com.example.readrave.ViewModelFactory
 import com.example.readrave.databinding.ActivityLoginBinding
 import com.example.readrave.databinding.ActivityWelcomeBinding
 import com.example.readrave.ui.main.MainActivity
+import com.example.readrave.data.result.Result
+import com.example.readrave.ui.register.RegisterViewModel
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+
+    private val viewModel by viewModels<LoginViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -41,12 +49,12 @@ class LoginActivity : AppCompatActivity() {
 //                        }
 //                        is Result.Success -> {
 //                            showLoading(false)
-//                            val token = result.data.loginResult?.token
-//                            if (token != null) {
-//                                lifecycleScope.launch {
-//                                    viewModel.saveSession(UserModel(email, token))
-//                                }
-//                            }
+////                            val token = result.data.loginResult?.token
+////                            if (token != null) {
+////                                lifecycleScope.launch {
+////                                    viewModel.saveSession(UserModel(email, token))
+////                                }
+////                            }
 //                            AlertDialog.Builder(this).apply {
 //                                setTitle("Yeayy!!")
 //                                setMessage("Anda berhasil Login")

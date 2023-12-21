@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -24,64 +23,54 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.readrave.R
 import com.example.readrave.ViewModelFactory
-import com.example.readrave.data.Repository
-import com.example.readrave.databinding.ActivitySearchBinding
+import com.example.readrave.data.repository.Repository
 import com.example.readrave.databinding.ActivitySearchBookBinding
+import com.example.readrave.ui.detail.DetailBookActivity
+import com.example.readrave.ui.main.ForYourAdapter
 import com.example.readrave.ui.main.MainActivity
-import com.example.readrave.ui.main.MainContent
+import com.example.readrave.ui.main.MainViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class SearchBookActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBookBinding
 
-    private val searchViewModel by viewModels<SearchViewModel> {
+    private val viewModel by viewModels<SearchViewModel> {
         ViewModelFactory.getInstance(this)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBookBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val adapter = BookAdapter()
-//
-//        with(binding) {
-//            searchView.setupWithSearchBar(searchBar)
-//            searchView
-//                .editText
-//                .setOnEditorActionListener { textView, actionId, event ->
-//                    searchBar.text = searchView.text
-//                    searchView.hide()
-//                    searchViewModel.search(searchView.text.toString())
-//                    searchViewModel.searchResult.observe(this@SearchBookActivity) { books ->
-//                        adapter.submitList(books)
-//                        binding.recyclerView.adapter = adapter
-//                    }
-//                    false
-//                }
-//
-//
-//        }
-
-        val composeView = ComposeView(this)
-
-        // Set konten Compose ke dalam ComposeView
-        composeView.setContent {
-            // Panggil Composable untuk konten utama di sini
-            MainScreen()
-        }
-
-        findViewById<FrameLayout>(R.id.container).addView(composeView)
+        showAllBooks()
 
         clickButton()
+    }
+
+    private fun showAllBooks(){
+        val adapter = BookAdapter{ books ->
+            val intent = Intent(this, DetailBookActivity::class.java)
+            intent.putExtra(DetailBookActivity.BOOK_ID, books.id)
+            startActivity(intent)
+        }
+
+        binding.rvAllBook.adapter = adapter
+        binding.rvAllBook.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+
+        viewModel.getAllBooks()
+
+        viewModel.groupedBooks.observe(this) {
+            adapter.submitList(it)
+        }
     }
 
     private fun clickButton(){
@@ -112,78 +101,78 @@ class SearchBookActivity : AppCompatActivity() {
     }
 }
 
-@Composable
-fun MainScreen(
-    modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = viewModel(factory = ViewModelFactory(Repository())),
-//    navigateToDetail: (Long) -> Unit,
-) {
-    val groupedBooks by viewModel.groupedBooks.collectAsState()
-    val query by viewModel.query
+//@Composable
+//fun MainScreen(
+//    modifier: Modifier = Modifier,
+//    viewModel: SearchViewModel
+////    navigateToDetail: (Long) -> Unit,
+//) {
+//    val groupedBooks by viewModel.groupedBooks.collectAsState()
+//    val query by viewModel.query
+//
+//    Box(modifier = modifier) {
+//        LazyColumn {
+//            item {
+//                SearchBar(
+//                    query = query,
+//                    onQueryChange = viewModel::search,
+//                    modifier = modifier.background(MaterialTheme.colorScheme.background)
+//                )
+//            }
+//            groupedBooks.forEach { (initial, books) ->
+//                items(books, key = { it.id }) { book ->
+//                    BooksListItem(
+//                        name = book.title,
+//                        description = book.description,
+//                        photoUrl = book.image,
+//                        modifier = modifier
+//                            .padding(horizontal = 8.dp)
+////                            .clickable{navigateToDetail(book.id)}
+//                    )
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun SearchBar(
+//    query: String,
+//    onQueryChange: (String) -> Unit,
+//    modifier: Modifier = Modifier
+//) {
+//    androidx.compose.material3.SearchBar(
+//        query = query,
+//        onQueryChange = onQueryChange,
+//        onSearch = {},
+//        active = false,
+//        onActiveChange = {},
+//        leadingIcon = {
+//            Icon(
+//                imageVector = Icons.Default.Search,
+//                contentDescription = null
+//            )
+//        },
+//        placeholder = {
+//            Text(stringResource(R.string.searchbar_hint))
+//        },
+//        shape = MaterialTheme.shapes.extraLarge,
+//        modifier = modifier
+//            .padding(16.dp)
+//            .fillMaxWidth()
+//            .heightIn(min = 48.dp)
+//    ) {
+//    }
+//}
+//
 
-    Box(modifier = modifier) {
-        LazyColumn {
-            item {
-                SearchBar(
-                    query = query,
-                    onQueryChange = viewModel::search,
-                    modifier = modifier.background(MaterialTheme.colorScheme.background)
-                )
-            }
-            groupedBooks.forEach { (initial, books) ->
-                items(books, key = { it.id }) { book ->
-                    BooksListItem(
-                        name = book.title,
-                        description = book.description,
-                        photoUrl = book.image,
-                        modifier = modifier
-                            .padding(horizontal = 8.dp)
-//                            .clickable{navigateToDetail(book.id)}
-                    )
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchBar(
-    query: String,
-    onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    androidx.compose.material3.SearchBar(
-        query = query,
-        onQueryChange = onQueryChange,
-        onSearch = {},
-        active = false,
-        onActiveChange = {},
-        leadingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null
-            )
-        },
-        placeholder = {
-            Text(stringResource(R.string.searchbar_hint))
-        },
-        shape = MaterialTheme.shapes.extraLarge,
-        modifier = modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-            .heightIn(min = 48.dp)
-    ) {
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    MaterialTheme {
-       MainScreen(
-//            navigateToDetail = {}
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun MainScreenPreview() {
+//    MaterialTheme {
+//       MainScreen(
+////            navigateToDetail = {}
+//        )
+//    }
+//}

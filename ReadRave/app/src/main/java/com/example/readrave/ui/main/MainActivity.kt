@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.FrameLayout
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,13 +18,15 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.readrave.R
+import com.example.readrave.ViewModelFactory
 import com.example.readrave.databinding.ActivityMainBinding
-import com.example.readrave.ui.components.BookColumn
-import com.example.readrave.ui.components.HomeSection
 import com.example.readrave.ui.components.dummyBook
 import com.example.readrave.ui.components.forYourBook
 import com.example.readrave.ui.components.topBook
+import com.example.readrave.ui.detail.DetailBookActivity
+import com.example.readrave.ui.register.RegisterViewModel
 import com.example.readrave.ui.search.SearchActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -31,24 +34,55 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private val viewModel by viewModels<MainViewModel> {
+        ViewModelFactory.getInstance(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        // Inisialisasi ComposeView untuk konten utama
-        val composeView = ComposeView(this)
 
-        // Set konten Compose ke dalam ComposeView
-        composeView.setContent {
-            // Panggil Composable untuk konten utama di sini
-            MainContent()
-        }
-
-        findViewById<FrameLayout>(R.id.container).addView(composeView)
+        displayForYourBook()
+        displayTopBook()
 
         clickButton()
+    }
+
+    private fun displayForYourBook(){
+        val adapter = ForYourAdapter{ books ->
+            val intent = Intent(this, DetailBookActivity::class.java)
+            intent.putExtra(DetailBookActivity.BOOK_ID, books.id)
+            startActivity(intent)
+        }
+
+        binding.rvForyourBook.adapter = adapter
+        binding.rvForyourBook.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        viewModel.getForYourBooks()
+
+        viewModel.forYourBooks.observe(this) {
+            adapter.submitList(it)
+        }
+    }
+
+    private fun displayTopBook(){
+        val adapter = TopBookAdapter{ books ->
+            val intent = Intent(this, DetailBookActivity::class.java)
+            intent.putExtra(DetailBookActivity.BOOK_ID, books.id)
+            startActivity(intent)
+        }
+
+        binding.rvTopBook.adapter = adapter
+        binding.rvTopBook.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+        viewModel.getTopBooks()
+
+        viewModel.topBooks.observe(this) {
+            adapter.submitList(it)
+        }
     }
 
     private fun clickButton(){
@@ -78,33 +112,29 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@Composable
-fun MainContent() {
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(10.dp)
-        ) {
-                HomeSection(
-                    title = stringResource(R.string.sedang_dibaca),
-                    content = { BookColumn(dummyBook) }
-                )
-                HomeSection(
-                    title = stringResource(R.string.for_your_book),
-                    content = { BookColumn(forYourBook) }
-                )
-                HomeSection(
-                    title = stringResource(R.string.top_book),
-                    content = { BookColumn(topBook) }
-                )
-        }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun MainContentPreview() {
-    MaterialTheme {
-        MainContent()
-    }
-}
+//@Composable
+//fun MainContent() {
+//        Column(
+//            modifier = Modifier
+//                .verticalScroll(rememberScrollState())
+//                .padding(10.dp)
+//        ) {
+//                HomeSection(
+//                    title = stringResource(R.string.for_your_book),
+//                    content = { BookColumn(forYourBook) }
+//                )
+//                HomeSection(
+//                    title = stringResource(R.string.top_book),
+//                    content = { BookColumn(topBook) }
+//                )
+//        }
+//}
+//
+//@Composable
+//@Preview(showBackground = true)
+//fun MainContentPreview() {
+//    MaterialTheme {
+//        MainContent()
+//    }
+//}
 

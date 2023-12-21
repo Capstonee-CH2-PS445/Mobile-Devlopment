@@ -27,4 +27,7 @@
     <string name="books_title">Judul Buku</string>
     <string name="book_description">Deskripsi buku</string>
     <string name="back">Kembali</string>
+    <string name="confPassword">Confirm Password</string>
+    <string name="add_bookmark">Tambahkan</string>
+    <string name="book_author">Penulis</string>
 </resources>
