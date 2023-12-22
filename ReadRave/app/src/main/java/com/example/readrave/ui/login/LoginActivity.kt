@@ -33,48 +33,50 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setUpAction() {
+        showLoading(false)
+
         binding.loginButton.setOnClickListener {
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
 
-            val intent = Intent(this, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
+//            val intent = Intent(this, MainActivity::class.java)
+//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//            startActivity(intent)
 
-//            viewModel.loginUser(email, password).observe(this) { result ->
-//                if (result != null) {
-//                    when (result) {
-//                        is Result.Loading -> {
-//                            showLoading(true)
-//                        }
-//                        is Result.Success -> {
-//                            showLoading(false)
-////                            val token = result.data.loginResult?.token
-////                            if (token != null) {
-////                                lifecycleScope.launch {
-////                                    viewModel.saveSession(UserModel(email, token))
-////                                }
-////                            }
-//                            AlertDialog.Builder(this).apply {
-//                                setTitle("Yeayy!!")
-//                                setMessage("Anda berhasil Login")
-//                                setPositiveButton("Masuk") { _, _ ->
-//                                    val intent = Intent(context, MainActivity::class.java)
-//                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-//                                    startActivity(intent)
-//                                    finish()
+            viewModel.loginUser(email, password).observe(this) { result ->
+                if (result != null) {
+                    when (result) {
+                        is Result.Loading -> {
+                            showLoading(true)
+                        }
+                        is Result.Success -> {
+                            showLoading(false)
+//                            val token = result.data.loginResult?.token
+//                            if (token != null) {
+//                                lifecycleScope.launch {
+//                                    viewModel.saveSession(UserModel(email, token))
 //                                }
-//                                create()
-//                                show()
 //                            }
-//                        }
-//                        is Result.Error -> {
-//                            showLoading(false)
-//                            Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
-//                        }
-//                    }
-//                }
-//            }
+                            AlertDialog.Builder(this).apply {
+                                setTitle("Yeayy!!")
+                                setMessage("Anda berhasil Login")
+                                setPositiveButton("Masuk") { _, _ ->
+                                    val intent = Intent(context, MainActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                create()
+                                show()
+                            }
+                        }
+                        is Result.Error -> {
+                            showLoading(false)
+                            Toast.makeText(this, result.error, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
     }
 

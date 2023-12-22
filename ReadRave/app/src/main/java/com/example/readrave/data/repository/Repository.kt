@@ -1,13 +1,21 @@
 package com.example.readrave.data.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.liveData
 import com.example.readrave.data.api.ApiService
+import com.example.readrave.data.paging.Paging
+import com.example.readrave.data.response.ListbookItem
 import com.example.readrave.data.response.LoginResponse
 import com.example.readrave.data.response.RegisterResponse
 import com.example.readrave.ui.components.Book
 import com.example.readrave.ui.components.dummyBook
 import com.example.readrave.data.result.Result
+import com.example.readrave.ui.components.favoriteBook
 import com.example.readrave.ui.components.topBook
 import com.google.gson.Gson
 import retrofit2.HttpException
@@ -47,8 +55,16 @@ class Repository (
             emit(error.message?.let { Result.Error(it) })
         }
     }
-    fun getAllBooks(): List<Book> {
-        return dummyBook
+
+    fun getAllBooks(): LiveData<PagingData<ListbookItem>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 5
+            ),
+            pagingSourceFactory = {
+                Paging(apiService)
+            }
+        ).liveData
     }
 
     fun getForYourBooks(): List<Book> {
@@ -61,6 +77,10 @@ class Repository (
 
     fun getBookById(bookId: String): Book? {
         return dummyBook.find { it.id == bookId }
+    }
+
+    fun getFavoriteBooks(): List<Book>{
+        return favoriteBook
     }
 
     fun searchBooks(query: String): List<Book>{

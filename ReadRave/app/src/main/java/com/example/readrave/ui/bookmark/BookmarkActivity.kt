@@ -1,4 +1,4 @@
-package com.example.readrave.ui.search
+package com.example.readrave.ui.bookmark
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,36 +7,35 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.readrave.R
 import com.example.readrave.ViewModelFactory
+import com.example.readrave.databinding.ActivityBookmarkBinding
 import com.example.readrave.databinding.ActivitySearchBookBinding
 import com.example.readrave.ui.adapter.BookAdapter
-import com.example.readrave.ui.bookmark.BookmarkActivity
+import com.example.readrave.ui.adapter.FavoriteAdapter
 import com.example.readrave.ui.detail.DetailBookActivity
 import com.example.readrave.ui.main.MainActivity
-import com.example.readrave.ui.profile.ProfileActivity
+import com.example.readrave.ui.search.SearchActivity
+import com.example.readrave.ui.search.SearchViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class SearchBookActivity : AppCompatActivity() {
+class BookmarkActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySearchBookBinding
+    private lateinit var binding: ActivityBookmarkBinding
 
-    private val viewModel by viewModels<SearchViewModel> {
+    private val viewModel by viewModels<BookmarkViewModel> {
         ViewModelFactory.getInstance(this)
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBookBinding.inflate(layoutInflater)
+        binding = ActivityBookmarkBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        searchBooks()
-
-        showAllBooks()
+        showFavoriteBooks()
 
         clickButton()
     }
 
-    private fun showAllBooks(){
-        val adapter = BookAdapter{ books ->
+    private fun showFavoriteBooks(){
+        val adapter = FavoriteAdapter{ books ->
             val intent = Intent(this, DetailBookActivity::class.java)
             intent.putExtra(DetailBookActivity.BOOK_ID, books.id)
             startActivity(intent)
@@ -45,22 +44,10 @@ class SearchBookActivity : AppCompatActivity() {
         binding.rvAllBook.adapter = adapter
         binding.rvAllBook.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        viewModel.getAllBooks().observe(this) {
-            adapter.submitData(lifecycle, it)
-        }
-    }
+        viewModel.getAllBooks()
 
-    private fun searchBooks(){
-        with(binding) {
-            searchView.setupWithSearchBar(searchBar)
-            searchView
-                .editText
-                .setOnEditorActionListener { textView, actionId, event ->
-                    searchBar.text = searchView.text
-                    searchView.hide()
-                    viewModel.search(searchView.text.toString())
-                    false
-                }
+        viewModel.groupedBooks.observe(this) {
+            adapter.submitList(it)
         }
     }
 
@@ -84,8 +71,7 @@ class SearchBookActivity : AppCompatActivity() {
                     true
                 }
                 R.id.profile -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    startActivity(intent)
+                    // Tambahkan logika atau intent jika diperlukan
                     true
                 }
                 else -> false

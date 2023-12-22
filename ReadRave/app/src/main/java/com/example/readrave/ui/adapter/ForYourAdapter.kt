@@ -1,4 +1,4 @@
-package com.example.readrave.ui.main
+package com.example.readrave.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.readrave.databinding.MainBookItemBinding
 import com.example.readrave.ui.components.Book
+import com.example.readrave.ui.main.BookItem
 
-class ForYourAdapter(private val onItemClick: (Book) -> Unit) : ListAdapter<Book, ForYourAdapter.BookViewHolder>(DIFF_CALLBACK) {
+class ForYourAdapter(private val onItemClick: (Book) -> Unit) : ListAdapter<Book, ForYourAdapter.BookViewHolder>(
+    DIFF_CALLBACK
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val binding = MainBookItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

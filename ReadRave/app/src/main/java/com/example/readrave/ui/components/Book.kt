@@ -18,6 +18,6 @@ val dummyBook = listOf(
     Book("6", R.drawable.book6, "Berpikir besar: Melampaui Pasar Lokal", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras consequat nulla felis, id iaculis libero ultrices a. Integer fermentum ligula consequat mollis faucibus. Duis pretium orci sit amet arcu dictum, at pellentesque ante feugiat. Nullam tristique sagittis maximus. Integer quis libero a ex eleifend rutrum. Nullam ornare enim massa, porta accumsan nunc consectetur non. Donec mattis auctor commodo. Vestibulum sollicitudin luctus lacus, sed mollis augue imperdiet quis. Sed vel dignissim ante."),
 )
 
-val forYourBook = dummyBook.shuffled()
+val favoriteBook = dummyBook.shuffled()
 
 val topBook = dummyBook.shuffled()

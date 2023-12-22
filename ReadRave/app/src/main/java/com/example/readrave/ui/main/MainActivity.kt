@@ -3,30 +3,15 @@ package com.example.readrave.ui.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.FrameLayout
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.readrave.R
 import com.example.readrave.ViewModelFactory
 import com.example.readrave.databinding.ActivityMainBinding
-import com.example.readrave.ui.components.dummyBook
-import com.example.readrave.ui.components.forYourBook
-import com.example.readrave.ui.components.topBook
+import com.example.readrave.ui.adapter.ForYourAdapter
+import com.example.readrave.ui.bookmark.BookmarkActivity
 import com.example.readrave.ui.detail.DetailBookActivity
-import com.example.readrave.ui.register.RegisterViewModel
+import com.example.readrave.ui.profile.ProfileActivity
 import com.example.readrave.ui.search.SearchActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -69,7 +54,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayTopBook(){
-        val adapter = TopBookAdapter{ books ->
+        val adapter = ForYourAdapter{ books ->
             val intent = Intent(this, DetailBookActivity::class.java)
             intent.putExtra(DetailBookActivity.BOOK_ID, books.id)
             startActivity(intent)
@@ -99,11 +84,13 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.bookmark -> {
-                    // Tambahkan logika atau intent jika diperlukan
+                    val intent = Intent(this, BookmarkActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.profile -> {
-                    // Tambahkan logika atau intent jika diperlukan
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false
@@ -111,30 +98,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-
-//@Composable
-//fun MainContent() {
-//        Column(
-//            modifier = Modifier
-//                .verticalScroll(rememberScrollState())
-//                .padding(10.dp)
-//        ) {
-//                HomeSection(
-//                    title = stringResource(R.string.for_your_book),
-//                    content = { BookColumn(forYourBook) }
-//                )
-//                HomeSection(
-//                    title = stringResource(R.string.top_book),
-//                    content = { BookColumn(topBook) }
-//                )
-//        }
-//}
-//
-//@Composable
-//@Preview(showBackground = true)
-//fun MainContentPreview() {
-//    MaterialTheme {
-//        MainContent()
-//    }
-//}
 

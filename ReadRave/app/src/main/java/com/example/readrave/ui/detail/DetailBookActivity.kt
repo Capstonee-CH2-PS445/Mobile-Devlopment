@@ -10,7 +10,10 @@ import com.example.readrave.R
 import com.example.readrave.ViewModelFactory
 import com.example.readrave.databinding.ActivityDetailBookBinding
 import com.example.readrave.databinding.ActivityMainBinding
+import com.example.readrave.ui.bookmark.BookmarkActivity
+import com.example.readrave.ui.main.MainActivity
 import com.example.readrave.ui.main.MainViewModel
+import com.example.readrave.ui.profile.ProfileActivity
 import com.example.readrave.ui.search.SearchActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -61,7 +64,8 @@ class DetailBookActivity : AppCompatActivity() {
         bottomNavView.setOnNavigationItemSelectedListener{
             when (it.itemId) {
                 R.id.home -> {
-                    // Tidak perlu intent karena sudah berada di MainActivity
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.search -> {
@@ -70,11 +74,13 @@ class DetailBookActivity : AppCompatActivity() {
                     true
                 }
                 R.id.bookmark -> {
-                    // Tambahkan logika atau intent jika diperlukan
+                    val intent = Intent(this, BookmarkActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.profile -> {
-                    // Tambahkan logika atau intent jika diperlukan
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false

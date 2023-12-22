@@ -1,41 +1,26 @@
-package com.example.readrave.ui.search
+package com.example.readrave.ui.profile
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.FrameLayout
-import androidx.compose.ui.platform.ComposeView
 import com.example.readrave.R
-import com.example.readrave.databinding.ActivitySearchBinding
+import com.example.readrave.databinding.ActivityProfileBinding
 import com.example.readrave.ui.bookmark.BookmarkActivity
-import com.example.readrave.ui.components.GenreRow
-import com.example.readrave.ui.components.genreItemList
 import com.example.readrave.ui.main.MainActivity
-import com.example.readrave.ui.profile.ProfileActivity
+import com.example.readrave.ui.search.SearchActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class SearchActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private lateinit var binding: ActivityProfileBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
+        binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val composeView = ComposeView(this)
-        composeView.setContent {
-            GenreRow(genreItemList)
-        }
-
-        findViewById<FrameLayout>(R.id.container).addView(composeView)
-
         clickButton()
-
-        binding.searchBar.setOnClickListener {
-            val intent = Intent(this, SearchBookActivity::class.java)
-            startActivity(intent)
-        }
     }
+
 
     private fun clickButton(){
         val bottomNavView: BottomNavigationView = binding.bottomNavigationView
@@ -47,6 +32,8 @@ class SearchActivity : AppCompatActivity() {
                     true
                 }
                 R.id.search -> {
+                    val intent = Intent(this, SearchActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.bookmark -> {
@@ -55,8 +42,7 @@ class SearchActivity : AppCompatActivity() {
                     true
                 }
                 R.id.profile -> {
-                    val intent = Intent(this, ProfileActivity::class.java)
-                    startActivity(intent)
+
                     true
                 }
                 else -> false

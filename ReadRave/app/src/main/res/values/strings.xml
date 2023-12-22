@@ -8,7 +8,7 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="message_login_page">Masukkan dulu datamu ya</string>
-    <string name="title_login_page">Sudah siap berbagi cerita?</string>
+    <string name="title_login_page">Sudah siap?</string>
     <string name="name">Nama</string>
     <string name="logout">Logout</string>
     <string name="title_login">Hallo</string>
@@ -30,4 +30,7 @@
     <string name="confPassword">Confirm Password</string>
     <string name="add_bookmark">Tambahkan</string>
     <string name="book_author">Penulis</string>
+    <string name="bookmark_title">Buku Favorit</string>
+    <string name="profile_name">Robert Pattinson</string>
+    <string name="profile_email">robert@gmail.com</string>
 </resources>

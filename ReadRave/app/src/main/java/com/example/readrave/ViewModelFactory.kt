@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.readrave.data.di.Injection
 import com.example.readrave.data.repository.Repository
+import com.example.readrave.ui.bookmark.BookmarkViewModel
 import com.example.readrave.ui.detail.DetailBookViewModel
 import com.example.readrave.ui.login.LoginViewModel
 import com.example.readrave.ui.main.MainViewModel
@@ -30,6 +31,9 @@ class ViewModelFactory (private val repository: Repository) : ViewModelProvider.
             }
             modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
                 SearchViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(BookmarkViewModel::class.java) -> {
+                BookmarkViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }

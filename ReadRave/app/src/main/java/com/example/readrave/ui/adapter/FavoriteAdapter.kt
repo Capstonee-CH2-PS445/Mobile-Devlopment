@@ -1,6 +1,5 @@
-package com.example.readrave.ui.search
+package com.example.readrave.ui.adapter
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.compose.foundation.clickable
@@ -21,17 +20,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.compose.AsyncImage
-import com.example.readrave.R
+import com.example.readrave.data.response.ListbookItem
 import com.example.readrave.databinding.SearchBookItemBinding
 import com.example.readrave.ui.components.Book
 
-class BookAdapter(private val onItemClick: (Book) -> Unit) : ListAdapter<Book, BookAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class FavoriteAdapter(private val onItemClick: (Book) -> Unit) : ListAdapter<Book, FavoriteAdapter.MyViewHolder>(
+    DIFF_CALLBACK
+) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = SearchBookItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -49,7 +49,7 @@ class BookAdapter(private val onItemClick: (Book) -> Unit) : ListAdapter<Book, B
         fun bind(book: Book){
             binding.composeView.setContent {
                 MaterialTheme {
-                    BookListItem(
+                    FavoriteListItem(
                         book,
                         onItemClick = { onItemClick(book) })
                 }
@@ -69,8 +69,9 @@ class BookAdapter(private val onItemClick: (Book) -> Unit) : ListAdapter<Book, B
     }
 }
 
+
 @Composable
-fun BookListItem(
+fun FavoriteListItem(
     book: Book,
     modifier: Modifier = Modifier,
     onItemClick: () -> Unit
@@ -101,7 +102,7 @@ fun BookListItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 16.dp)
-                ) {
+            ) {
                     Text(
                         text = book.title,
                         fontWeight = FontWeight.Medium,
@@ -110,6 +111,7 @@ fun BookListItem(
                             .fillMaxWidth()
                             .wrapContentHeight()
                     )
+                }
                     Text(
                         text = book.description,
                         fontWeight = FontWeight.Normal,
@@ -120,16 +122,4 @@ fun BookListItem(
                     )
                 }
             }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BooksListItemPreview() {
-    MaterialTheme {
-        BookListItem(
-            book = Book("1", R.drawable.book1, "Banyak Bicara Sedikit Bekerja", "Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-            onItemClick = {}
-        )
-    }
-}
+        }

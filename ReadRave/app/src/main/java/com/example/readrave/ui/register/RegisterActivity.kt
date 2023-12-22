@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import com.example.readrave.ViewModelFactory
-import com.example.readrave.data.api.RegisterRequest
 import com.example.readrave.databinding.ActivityRegisterBinding
 import com.example.readrave.ui.welcome.WelcomeActivity
 import com.example.readrave.data.result.Result
@@ -37,13 +36,6 @@ class RegisterActivity : AppCompatActivity() {
 
             val intent = Intent(this, WelcomeActivity::class.java)
             startActivity(intent)
-
-//            val registerRequest = RegisterRequest(
-//                name = name,
-//                email = email,
-//                password = password,
-//                confPassword = confPassword
-//            )
 
             // Validasi input
             if (name.isNotEmpty() && email.isNotEmpty() && password.length >= 8) {
